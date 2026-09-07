@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue入门小练习</title>
+  <!-- 引入 Vue3(CDN) -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+  <div id="my-app">
+    <h2>{{ title }}</h2>
+    <p>当前数值：{{ num }}</p>
+    <button @click="increase">每次加一</button>
+    <button @click="reset">归零</button>
+  </div>
+
+  <script>
+    const { createApp } = Vue
+
+    createApp({
+      data() {
+        return {
+          title: '响应式计数小工具',
+          num: 10
+        }
+      },
+      methods: {
+        increase() {
+          this.num = this.num + 1
+        },
+        reset() {
+          this.num = 0
+        }
+      }
+    }).mount('#my-app')
+  </script>
+</body>
+</html>
