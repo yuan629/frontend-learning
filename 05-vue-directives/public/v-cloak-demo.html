@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>v-cloak 闪烁对比演示</title>
+  <style>
+    /* v-cloak 的配套规则：挂载完成前隐藏模板，挂载后 Vue 会移除该属性。
+       样式千万不能漏，漏了指令就等于没加。 */
+    [v-cloak] {
+      display: none;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 18px;
+      font-family: system-ui, 'Microsoft YaHei', sans-serif;
+      background: #f5f7fa;
+      min-height: 100vh;
+    }
+    .win {
+      background: #fff;
+      border: 1px solid #e4e7ed;
+      border-radius: 12px;
+      padding: 16px 18px;
+      max-width: 420px;
+    }
+    .win h4 { margin: 0 0 12px; font-size: 14px; color: #303133; }
+    .win.good h4 { color: #67c23a; }
+    .win.bad h4 { color: #f56c6c; }
+    .board {
+      min-height: 64px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: #f5f7fa;
+      font-size: 14px;
+      color: #303133;
+      word-break: break-all;
+    }
+    .pending {
+      color: #909399;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    .btn {
+      margin-top: 12px;
+      padding: 6px 14px;
+      font-size: 13px;
+      border: 1px solid #dcdfe6;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+    }
+    .btn:hover { border-color: #409eff; color: #409eff; }
+  </style>
+</head>
+<body>
+  <!-- mode=cloak：只显示加了 v-cloak 的窗口；mode=raw：只显示没加的窗口 -->
+  <div class="win good" id="win-cloak">
+    <h4>左边：加了 v-cloak</h4>
+    <div class="board" id="app1" v-cloak>
+      <p>公告：{{ notice }}</p>
+    </div>
+    <p class="pending" id="pend1">模拟网络延迟中……1.2 秒后拿到数据</p>
+    <button class="btn" onclick="location.reload()">重新加载</button>
+  </div>
+
+  <div class="win bad" id="win-raw">
+    <h4>右边：没加 v-cloak（注意观察闪烁）</h4>
+    <div class="board" id="app2">
+      <p>公告：{{ notice }}</p>
+    </div>
+    <p class="pending" id="pend2">模拟网络延迟中……1.2 秒后拿到数据</p>
+    <button class="btn" onclick="location.reload()">重新加载</button>
+  </div>
+
+  <!-- CDN 方式引入 Vue 完整版（含模板编译器），断网也能打开本页 -->
+  <script src="./vue.global.js"></script>
+  <script>
+    // 按 iframe 的 ?mode= 参数决定显示哪个窗口（外层组件就是这么区分左右的）
+    const mode = new URLSearchParams(location.search).get('mode');
+    if (mode === 'cloak') document.getElementById('win-raw').style.display = 'none';
+    if (mode === 'raw') document.getElementById('win-cloak').style.display = 'none';
+
+    const NOTICE = '系统维护通知：今晚 22:00 - 23:00 停服升级，请提前保存数据。';
+
+    // 模拟慢网络：1.2 秒之后才创建应用并挂载，这段时间就是"闪烁窗口期"
+    setTimeout(function () {
+      Vue.createApp({ data: function () { return { notice: NOTICE } } }).mount('#app1');
+      Vue.createApp({ data: function () { return { notice: NOTICE } } }).mount('#app2');
+      const pend1 = document.getElementById('pend1');
+      const pend2 = document.getElementById('pend2');
+      if (pend1) pend1.textContent = '已挂载，模板替换完成。';
+      if (pend2) pend2.textContent = '已挂载，模板替换完成。';
+    }, 1200);
+  </script>
+</body>
+</html>
