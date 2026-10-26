@@ -1,0 +1,45 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "MiniBlog",
+        "enablePullDownRefresh": true,
+        "backgroundTextStyle": "dark"
+      }
+    },
+    {
+      "path": "pages/detail/detail",
+      "style": {
+        // #ifdef MP-WEIXIN
+        "navigationBarTitleText": "文章详情",
+        // #endif
+        // #ifdef H5
+        "navigationBarTitleText": "MiniBlog · 详情",
+        // #endif
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/favorite/favorite",
+      "style": {
+        "navigationBarTitleText": "我的收藏"
+      }
+    },
+    {
+      "path": "pages/about/index",
+      "style": {
+        "navigationBarTitleText": "关于"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "MiniBlog",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f5f6f8"
+  },
+  "easycom": {
+    "autoscan": true
+  }
+}

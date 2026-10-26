@@ -46,3 +46,22 @@ pnpm install
 pnpm dev:h5
 pnpm dev:mp-weixin
 ```
+
+## 本地工程清单
+
+| 目录 | 内容 |
+| --- | --- |
+| `miniblog/` | MiniBlog 练习工程：uni-app + Vue 3 + TS + Pinia，数据走 jsonplaceholder |
+
+`miniblog` 是独立工程（自带 `package.json` 与 `node_modules`），运行方式：
+
+```bash
+cd uniapp-port/miniblog
+npm install            # 首次或依赖变更后
+npm run dev:mp-weixin  # 微信小程序，产物在 dist/dev/mp-weixin，用开发者工具导入该目录
+npm run dev:h5         # 浏览器预览，http://localhost:5173/
+npm run type-check     # vue-tsc 类型检查
+npm run build:mp-weixin
+```
+
+验收清单、发行自检与产物体积统计见 `miniblog/验收报告.md`。
